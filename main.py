@@ -1,80 +1,76 @@
-from tkinter import *
+import TkInter
+import TkInter.messagebox
+
+from TkInter import *
 
 window = Tk()
+window.title("Shipley Painters")
 
-# Window width
-window.geometry("312x324")
+# The different grids
+Label(window, text = "Name").grid(row = 0)
+name = Entry(window)
+name.grid(row = 0, column = 1)
 
-window.resizable(0, 0)
+Label(window, text = "Height").grid(row = 1)
+height = Entry(window)
+height.grid(row = 1, column = 1)
 
-# Window title
-window.title("Calcualtor")
+Label(window, text = "Length 1").grid(row = 2)
+length1 = Entry(window)
+length1.grid(row = 2, column = 1)
 
-# Updates which button was clicked
-def btn_click(item):
-    global expression
-    expression = expression + str(item)
-    input_text.set(expression)
+Label(window, text = "Length 2").grid(row = 3)
+length2 = Entry(window)
+length2.grid(row = 3, column = 1)
 
-# Clears the area for input
-def btn_clear():
-    global expression
-    expression = ""
-    input_text.set("")
+Label(window, text = "Length 3").grid(row = 4)
+Length3 = Entry(window)
+Length3.grid(row = 4, column = 1)
 
-# Calculates what has been input into the calculator
-def btn_equal():
-    global expression
-    result = str(eval(expression))
-    input_text.set(result)
-    expression = ""
+Label(window, text = "Length 4").grid(row = 5)
+Length4 = Entry(window)
+Length4.grid(row = 5, column = 1)
 
-expression = ""
-input_text = StringVar()
-
-# Creates a frame for the input
-input_frame = Frame(window, width = 312, height = 50, bd = 0, highlightbackground = "black", highlightcolor = "black", highlightthickness = 1)
-input_frame.pack(side = TOP)
-
-# Digits output on the input frame
-input_field = Entry(input_frame, font = ('arial', 18, 'bold'), textvariable = input_text, width = 50, bg = "#eee", bd = 0, justify = RIGHT)
-input_field.grid(row = 0, column = 0)
-input_field.pack(ipady = 10)
-
-# The frame for where the buttons will go below the input frame
-btns_frame = Frame(window, width = 312, height = 272.5, bg = "grey")
-btns_frame.pack()
-
-# FIRST - The first row will be the buttons 'Clear (C)' and 'Divide (/)'
-clear = Button(btns_frame, text = "C", fg = "black", width = 32, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_clear()).grid(row = 0, column = 0, columnspan = 3, padx = 1, pady = 1)
-divide = Button(btns_frame, text = "/", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_click("/")).grid(row = 0, column = 3, padx = 1, pady = 1)
+# The options
+paint_choice = IntVar()
+paint_choice.set(2)
+Radiobutton(window, text = "Luxury", variable = paint_choice, value = 1).grid(row = 7, column = 0)
+Radiobutton(window, text = "Standard", variable = paint_choice, value = 2).grid(row = 7, column = 1)
+Radiobutton(window, text = "Economy", variable = paint_choice, value = 3).grid(row = 7, column = 2)
 
 
-# SECOND - The second row will be the buttons '7', '8', '9' and 'Multiply (*)'
-seven = Button(btns_frame, text = "7", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(7)).grid(row = 1, column = 0, padx = 1, pady = 1)
-eight = Button(btns_frame, text = "8", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(8)).grid(row = 1, column = 1, padx = 1, pady = 1)
-nine = Button(btns_frame, text = "9", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(9)).grid(row = 1, column = 2, padx = 1, pady = 1)
-multiply = Button(btns_frame, text = "*", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_click("*")).grid(row = 1, column = 3, padx = 1, pady = 1)
+# Undercoat option
+use_undercoat = IntVar()
+undercoat = Checkbutton(window, text = "Undercoat", variable = use_undercoat)
+undercoat.grid(row = 8, column = 8)
+
+# Calculation
+def perform_calc():
+   print(use_undercoat.get())
+
+   paint_quality = paint_choice.get()
+   area = int(height.get()) * int((length1.get() + length2.get() + length3.get() + length4.get())
+   print_cost = 0
+   if paint_quality == 1:
+      paint_cost = 1.90
+   elif paint_quality == 2:
+      paint_cost = 1.00
+   else:
+      paint_cost = 0.60
+
+   if use_undercoat.get():
+       paint_cost += 0.50
+
+   total_paint_cost = paint_cost * area
+
+   itemised_total = f"total area = {area} \n" # appears in the message box
+   itemised_total += f"Paint cost = {total_paint_cost}" # appears in the message box
+
+# Message box
+   TkInter.messagebox.showinfo("Alert Message", itemised_total)
 
 
-# THIRD - The third row will be the buttons '4', '5', '6' and 'Subtract (-)'
-four = Button(btns_frame, text = "4", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(4)).grid(row = 2, column = 0, padx = 1, pady = 1)
-five = Button(btns_frame, text = "5", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(5)).grid(row = 2, column = 1, padx = 1, pady = 1)
-six = Button(btns_frame, text = "6", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(6)).grid(row = 2, column = 2, padx = 1, pady = 1)
-minus = Button(btns_frame, text = "-", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_click("-")).grid(row = 2, column = 3, padx = 1, pady = 1)
-
-
-# FOURTH - The fourth row will be the buttons '1', '2', '3' and 'Addition (+)'
-one = Button(btns_frame, text = "1", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(1)).grid(row = 3, column = 0, padx = 1, pady = 1)
-two = Button(btns_frame, text = "2", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(2)).grid(row = 3, column = 1, padx = 1, pady = 1)
-three = Button(btns_frame, text = "3", fg = "black", width = 10, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(3)).grid(row = 3, column = 2, padx = 1, pady = 1)
-plus = Button(btns_frame, text = "+", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_click("+")).grid(row = 3, column = 3, padx = 1, pady = 1)
-
-
-# FIFTH - The fifth row will be the buttons '0', 'Decimal (.)', and 'Equal To (=)'
-zero = Button(btns_frame, text = "0", fg = "black", width = 21, height = 3, bd = 0, bg = "#fff", cursor = "hand2", command = lambda: btn_click(0)).grid(row = 4, column = 0, columnspan = 2, padx = 1, pady = 1)
-point = Button(btns_frame, text = ".", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_click(".")).grid(row = 4, column = 2, padx = 1, pady = 1)
-equals = Button(btns_frame, text = "=", fg = "black", width = 10, height = 3, bd = 0, bg = "#eee", cursor = "hand2", command = lambda: btn_equal()).grid(row = 4, column = 3, padx = 1, pady = 1)
+TkInter.Button(window, text ="Calculate", command = perform_calc).grid(row = 10, column = 1)
 
 
 window.mainloop()
